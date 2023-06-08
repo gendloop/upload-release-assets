@@ -86,7 +86,7 @@ runs:
                     return;
                 }
                 
-                const fileName = file.split("/").pop();
+                const fileName = file.split("\").pop();
                 const assest = release.assets.filter(asset=>asset.name == fileName);
                 if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
                   github.rest.repos.deleteReleaseAsset({
@@ -133,7 +133,7 @@ runs:
                         return;
                       }
                       
-                      const fileName = file.split("/").pop();
+                      const fileName = file.split("\").pop();
                       const assest = release.assets.filter(asset=>asset.name == fileName);
                       if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
                         github.rest.repos.deleteReleaseAsset({
@@ -171,7 +171,7 @@ runs:
                         return;
                       }
                       
-                      const fileName = file.split("/").pop();
+                      const fileName = file.split("\").pop();
                       const assest = release.assets.filter(asset=>asset.name == fileName);
                       if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
                         github.rest.repos.deleteReleaseAsset({
