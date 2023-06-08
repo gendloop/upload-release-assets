@@ -2,4 +2,4 @@
 PROJECT_NAME=upload-release-assets
 upload-release-assets_VERSION_MAJOR=1
 upload-release-assets_VERSION_MINOR=0
-upload-release-assets_VERSION_PATCH=0
+upload-release-assets_VERSION_PATCH=1
