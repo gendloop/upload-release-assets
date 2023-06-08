@@ -3,13 +3,17 @@
 ## Usage
 
 ```yaml
-- name: upload-release-assets
-      uses: gendloop/upload-release-assets@main
-      with:
+jobs:
+  cmake_and_upload:
+    runs-on: windows-2019
+    steps:
+      - name: upload-release-assets
+        uses: gendloop/upload-release-assets@main
+        with:
         releaseTag: 'v1.2.3'
         githubToken: ${{ secrets.GITHUB_TOKEN }}
         files: |
-          ./upload/*.zip
+        	./upload/*.zip
         overrideExistingArtefact: true
 ```
 
