@@ -57,16 +57,16 @@ runs:
           const path = require('path');
           const fs = require('fs');
           const os = require('os');
-          
+
           const __dirname = path.resolve()
-          
+
           console.log('searching for release...')
           var { data: release } = await github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag: '${{inputs.releaseTag}}'
           });
-          
+
           console.log("found release " + release.name)
 
           if (process.env.ARTEFACT_NAME_INPUT == '' && process.env.FILES.indexOf("*") > -1){
@@ -75,7 +75,7 @@ runs:
                 followSymbolicLinks: 'FALSE'
             }
             const files = process.env.FILES.split(os.EOL);
-            
+
             const globber = await glob.create(files.join('\n'), globOptions)
 
             for await (const file of globber.globGenerator()) {
@@ -85,7 +85,7 @@ runs:
                     console.error(err);
                     return;
                 }
-                
+
                 const fileName = file.split("\\").pop();
                 const assest = release.assets.filter(asset=>asset.name == fileName);
                 if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
@@ -93,9 +93,9 @@ runs:
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       asset_id: assest.id
-                  });                  
+                  });
                 }
-                
+
                 console.log('write to '+ release.id)
                 github.rest.repos.uploadReleaseAsset({
                     owner: context.repo.owner,
@@ -108,7 +108,7 @@ runs:
             }
           }else if(process.env.ARTEFACT_NAME_INPUT == ''){
             console.log('doing file option');
-          
+
             const directoryPath = './';
             fs.readdir(directoryPath, function (err, files) {
               if (err) {
@@ -120,7 +120,7 @@ runs:
                 console.log('local fs' + file)
               });
             });
-            
+
             const files = process.env.FILES.split(os.EOL);
             console.log(files)
             files.forEach(file => {
@@ -132,7 +132,7 @@ runs:
                         console.error(err);
                         return;
                       }
-                      
+
                       const fileName = file.split("\\").pop();
                       const assest = release.assets.filter(asset=>asset.name == fileName);
                       if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
@@ -140,9 +140,9 @@ runs:
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             asset_id: assest.id
-                        });                  
+                        });
                       }
-                      
+
                       console.log('write to '+ release.id)
                       github.rest.repos.uploadReleaseAsset({
                         owner: context.repo.owner,
@@ -151,16 +151,16 @@ runs:
                         name: fileName,
                         data: data
                       });
-                  });              
+                  });
                 }
-            });            
+            });
           }else{
             console.log('doing artefact option');
             const directoryPath = './_tmpuragha/out/';
             fs.readdir(directoryPath, function (err, files) {
                 if (err) {
                     return console.log('Unable to scan directory: ' + err);
-                } 
+                }
 
                 //listing all files using forEach
                 files.forEach(function (file) {
@@ -170,7 +170,7 @@ runs:
                         console.error(err);
                         return;
                       }
-                      
+
                       const fileName = file.split("\\").pop();
                       const assest = release.assets.filter(asset=>asset.name == fileName);
                       if(assest.length > 0 && process.env.OVERRIDE_ARTEFACTS == "true"){
@@ -178,9 +178,9 @@ runs:
                             owner: context.repo.owner,
                             repo: context.repo.repo,
                             asset_id: assest.id
-                        });                  
+                        });
                       }
-                      
+
                       github.rest.repos.uploadReleaseAsset({
                         owner: context.repo.owner,
                         repo: context.repo.repo,
@@ -190,5 +190,5 @@ runs:
                       });
                   });
                 });
-            });          
+            });
           }
